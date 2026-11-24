@@ -1,73 +1,67 @@
-# 小红书雷达
+<h1 align="center">小红书雷达</h1>
 
-S2 和考研项目可以从同一台授权设备读取公开笔记，共用一套取样历史。仓库包含计划、只读采集、固定原帖队列、SQLite 导入和报告程序。日常离线操作只需 Python 标准库。
+<p align="center">
+  <img src="docs/assets/radar-overview.svg" width="760" alt="S2 与考研项目通过一台授权设备，共用一份取样历史">
+</p>
 
-## 解决多项目重复取样问题
+<p align="center"><strong>同一篇笔记只建一条记录，每次取样都留下当时的赞藏快照。</strong></p>
 
-搜索任务各有自己的冻结计划和运行号。完成的搜索按雷达层导入设备已有的数据库，以平台和笔记 ID 识别同一篇原帖，以运行号保留不同批次的快照。S2 可以从指定搜索的卡片中固定普通样本或边界样本。考研项目继续使用设备上的关键词配置、收藏门槛和跨作者规则。
+<p align="center">
+  <a href="#快速开始">快速开始</a> ·
+  <a href="docs/device-guide.md">设备使用手册</a> ·
+  <a href="#数据与隐私">数据与隐私</a> ·
+  <a href="SOURCES.md">源码来源</a>
+</p>
+
+<p align="center">
+  <img src="docs/badges/python.svg" alt="Python 3.10+">
+  <img src="docs/badges/powershell.svg" alt="设备端使用 Windows PowerShell 5.1">
+</p>
+
+## 雷达解决什么问题
+
+S2 和考研项目各自决定搜什么，共用 `xhs-viral-radar` 背后的只读采集器和设备上的 SQLite 历史库。假设两边先后搜到同一篇笔记，雷达会用平台和笔记 ID 找回同一条记录，再按运行号保存各次观测。回看某一批时，仍然能看到当时的赞藏数。
+
+| 使用场景 | 从哪里开始 | 得到什么 |
+| --- | --- | --- |
+| S2 研究新方向 | 给出关键词，冻结本轮计划 | 带来源的搜索卡片，可选入固定原帖队列，也可保留普通样本作对照 |
+| 考研筛选高收藏专题 | 用设备现有关键词配置生成周计划 | 按收藏门槛筛选的候选，以及有多位作者支持的专题 |
+| 复查已有样本 | 指定原运行号和搜索回执目录 | 离线核对计划、作者、链接和卡片快照 |
 
 ## 快速开始
 
-从克隆目录执行。设备状态入口使用 Windows PowerShell 5.1 和 Python 3.10+。独立的 Python 计划与队列检查可直接在有相应本地文件的环境运行。
+在克隆目录打开 PowerShell。先用[合成关键词](config/keywords.example.json)试跑，Python 标准库就能生成计划。
+
+```powershell
+$plan = Join-Path $env:TEMP ("radar-{0}.json" -f [guid]::NewGuid())
+python -B scripts/xhs-radar/xhs_radar.py plan `
+  --config config/keywords.example.json --plan "$plan"
+```
+
+回执中的 `operations: 2` 对应两条示例查询，`network_request_made: false` 表示本次仅生成计划。打开 `$plan` 可以查看每条查询的关键词、时间范围和排序方式。
+
+在授权设备上，可单独查看雷达能否找到中央数据库：
 
 ```powershell
 python -B radar/radar.py status
-$plan = Join-Path ([IO.Path]::GetTempPath()) ("radar-demo-" + [guid]::NewGuid() + ".json")
-python -B scripts/xhs-radar/xhs_radar.py plan --config config/keywords.example.json --plan "$plan"
 ```
 
-示例配置生成两条操作，回执包含输出路径、操作数和 `network_request_made: false`。每次使用新的输出文件名，以便保留先前的计划。状态中的 `authentication_state` 为 `unknown`，`central_database_present` 表示本机数据库文件是否存在。
+`central_database_present` 表示数据库文件是否存在。离线检查时，登录状态 `authentication_state` 显示为 `unknown`。生成真实周计划、检查既有队列和准备详情批次的命令见[设备使用手册](docs/device-guide.md)。
 
-## 使用设备上的计划和队列
+## 数据与隐私
 
-| 设备配置 | 作用 |
+| 进入 GitHub 私有仓库 | 留在授权设备 |
 | --- | --- |
-| `XHS_RADAR_ENGINE_ROOT` | 现有部署的项目根，包含 `data/xhs-radar`、`config`、`.local-tools`。先取进程配置，再取用户配置，默认解析 Windows“文档”中的“考研自动化宣传”。 |
-| `S2_MUSE_RADAR_STATE` | S2 已有的私有计划与队列根目录，使用绝对路径。默认位置为 `%LOCALAPPDATA%/s2-muse/radar`。历史任务如指定了其他位置，应指回原目录。 |
-| `S2_RESEARCH_ROOT` | 复用旧版详情批次时，定位宿主原有的 `.runtime/s2/<run>/<batch>`。新批次使用队列根下的 `native-batches`。 |
-| `XHS_RADAR_PYTHON` | 可选，给 PowerShell 包装器指定兼容的 Python 可执行文件。 |
-| `XHS_RADAR_WRAPPER` | 可选，S2 风格入口可显式调用已核对摘要的原设备包装器。默认使用仓库内包装器。 |
+| 只读采集与报告代码、数据库建表 SQL | 账号登录会话、浏览器配置、请求使用的令牌 |
+| 合成关键词、离线测试、文档与示意图 | 真实关键词、取样数据库、运行记录、私有链接参数和原媒体 |
 
-考研方向按设备现有配置生成周计划，下面的命令将结果写入临时文件。
+仓库按文件名维护[发布清单](.gitignore)。在线搜索与详情读取使用设备已有授权和只读提供程序。第三方程序由设备提供，源码提取范围及许可说明见[源码基线](SOURCES.md)。
 
-```powershell
-$weekly = Join-Path ([IO.Path]::GetTempPath()) ("radar-week-" + [guid]::NewGuid() + ".json")
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/run-radar.ps1 -Action plan -PlanPath "$weekly"
-```
-
-S2 新建方向时执行下面两条命令。重复查看沿用原运行号。
-
-```powershell
-$run = "muse-demo-" + (Get-Date -Format "yyyyMMddHHmmss")
-python -B radar/radar.py plan --run $run --keyword "示例主题"
-python -B radar/radar.py inspect --run $run
-```
-
-检查**已有队列**时，将 `$run` 和 `$sourceRun` 设置为原运行号和搜索回执中的 `run_directory`。检查会读取原计划、公开 manifest、搜索观察和队列卡片，核对计划摘要、笔记及作者、规范链接、抽样角色和冻结的卡片观测。输出只含状态、条目数和网络标记。队列为空或记录不一致时返回非零退出码。
-
-```powershell
-python -B radar/radar.py check-queue --run "$run" --source-run "$sourceRun"
-```
-
-使用当前仓库提供的 Python 原帖入口准备单批时，可用下列命令。`$noteId` 来自上述队列，`$batch` 是本次详情批次的独立名称。缺省只准备设备私有适配文件。复用旧批次时使用原编号、原顺序和原宿主路径。
-
-```powershell
-python -B radar/radar.py native-originals --run "$run" --source-run "$sourceRun" --batch "$batch" --note "$noteId"
-```
-
-`python -B radar/radar.py --help` 列出 S2 的 `search`、`resume`、`details` 和 `report` 等入口。设备共用原有的占用锁和只读提供程序，在线动作需要当次授权。原生固定队列详情需要另加 `--execute`。遇到登录、限流或验证中断，保留检查点，之后按原批次明确续跑。常规考研任务可从仓库的 `scripts/run-radar.ps1` 使用原有的 `-Action` 和 `-RunId` 参数。可选逐帖服务的设备协议见 [PROVIDER.md](radar/PROVIDER.md)。
-
-## 测试与验证范围
+## 测试与验证
 
 ```powershell
 python -B -m unittest discover -s tests -v
 python -B radar/test_adapter.py -v
 ```
 
-合成用例覆盖跨项目导入和重复运行、报告计数、详情检查点、占用处理、固定队列来源和新批次准备。设置 `S2_RESEARCH_ROOT` 且存在历史批次时，还会在临时目录解析从旧回执派生的脚本。测试使用临时数据库和本地模拟程序。
-
-本次在授权设备上进行了离线状态、周计划及已有固定队列核对。账号当前登录、线上搜索和详情返回均未实测。
-
-## 隐私与源码来源
-
-设备保存 SQLite、关键词实配、运行历史、私有查找缓存和原媒体。发布清单只收录列名的源文件、SQL、合成配置、测试与文档。克隆代码后仍需连接已部署的设备才能在线运行。仓库不包含第三方提供程序的源码、补丁包或二进制。来源版本、提取范围和许可边界见 [SOURCES.md](SOURCES.md)。
+离线测试覆盖跨项目去重、重复导入、报告计数、详情断点和队列身份核对。独立发布时，还在授权设备上核对过本地状态、周计划和一条已有原帖队列记录。本次发布验证范围截至离线核对，未进行线上搜索或详情读取。

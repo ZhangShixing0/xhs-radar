@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-labelledby="title description">
+  <title id="title">S2 与考研共用的小红书雷达</title>
+  <desc id="description">S2 和考研项目使用同一台授权设备，搜索结果进入共享取样历史。右侧将雷达扫描面与层叠的历史记录画在一起。</desc>
+  <defs>
+    <linearGradient id="surface" x2="1" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#132e32"/>
+      <stop offset="1" stop-color="#102529"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="0" y1="1" x2="1" y2="0" gradientUnits="objectBoundingBox">
+      <stop stop-color="#ff985d" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#ff985d" stop-opacity=".65"/>
+    </linearGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="1.2" fill="#467072"/>
+    </pattern>
+    <clipPath id="frame"><rect width="1200" height="500" rx="20"/></clipPath>
+    <clipPath id="dial"><ellipse cx="884" cy="196" rx="222" ry="108"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#frame)">
+    <rect width="1200" height="500" fill="url(#surface)"/>
+    <path d="M607 0H1200V500H607Z" fill="url(#grid)" opacity=".55"/>
+    <g fill="none" stroke="#2b484b" stroke-width="1.5">
+      <path d="M612 58H1148M612 443H1148" stroke-dasharray="8 9"/>
+      <path d="M612 50V66M604 58H620M1148 50V66M1140 58H1156M612 435V451M604 443H620M1148 435V451M1140 443H1156" stroke="#688282"/>
+    </g>
+
+    <g font-family="'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', sans-serif">
+      <path d="M72 120H122" fill="none" stroke="#ff985d" stroke-width="6"/>
+      <text x="142" y="132" fill="#bdd4cb" font-size="34" font-weight="600">S2 / 考研</text>
+      <g fill="#f7efdf" font-size="73" font-weight="700">
+        <text x="66" y="253">一台授权设备</text>
+        <text x="66" y="349">共享取样历史</text>
+      </g>
+    </g>
+
+    <!-- The front arcs show distinct snapshots sharing the same storage. -->
+    <g stroke-linecap="round" stroke-linejoin="round">
+      <path d="M662 196V280A222 108 0 0 0 1106 280V196Z" fill="#17373a" stroke="#86a69d" stroke-width="2.5"/>
+      <g fill="none" stroke-width="2.5">
+        <path d="M662 224A222 108 0 0 0 1106 224" stroke="#507674"/>
+        <path d="M662 252A222 108 0 0 0 1106 252" stroke="#638884"/>
+        <path d="M662 280A222 108 0 0 0 1106 280" stroke="#95afa4"/>
+      </g>
+      <ellipse cx="884" cy="196" rx="222" ry="108" fill="#1d4243" stroke="#bacbb8" stroke-width="3"/>
+      <g clip-path="url(#dial)">
+        <g fill="none" stroke="#688c82" stroke-width="1.6">
+          <ellipse cx="884" cy="196" rx="164" ry="79.8"/>
+          <ellipse cx="884" cy="196" rx="109" ry="53"/>
+          <ellipse cx="884" cy="196" rx="54" ry="26.3"/>
+          <path d="M662 196H1106M884 88V304M727 120L1041 272M727 272L1041 120" stroke="#547972"/>
+        </g>
+        <path d="M884 196L884 88A222 108 0 0 1 1054 127Z" fill="url(#sweep)"/>
+        <path d="M884 196L1054 127" fill="none" stroke="#ff985d" stroke-width="5"/>
+        <ellipse cx="884" cy="196" rx="8" ry="5" fill="#fff0d4"/>
+        <ellipse cx="1006" cy="145" rx="12" ry="6.5" fill="#ff985d"/>
+        <ellipse cx="1006" cy="145" rx="22" ry="11.5" fill="none" stroke="#ffbb81" stroke-width="2"/>
+        <ellipse cx="762" cy="223" rx="8" ry="4.5" fill="#cadace"/>
+      </g>
+      <g fill="none" stroke="#e9d7b3" stroke-width="3.5">
+        <path d="M685 271l13 10M685 299l13 10M685 327l13 10"/>
+      </g>
+    </g>
+    <rect x=".75" y=".75" width="1198.5" height="498.5" rx="20" fill="none" stroke="#365355" stroke-width="1.5"/>
+  </g>
+</svg>

@@ -1,6 +1,9 @@
 # Only reviewed distribution files are visible to Git.
 *
 !/config/
+!/docs/
+!/docs/assets/
+!/docs/badges/
 !/radar/
 !/schemas/
 !/scripts/
@@ -12,6 +15,11 @@
 !/README.md
 !/SOURCES.md
 !/config/keywords.example.json
+!/docs/device-guide.md
+!/docs/assets/radar-overview.svg
+!/docs/badges/badges.json
+!/docs/badges/python.svg
+!/docs/badges/powershell.svg
 !/radar/PROVIDER.md
 !/radar/native_batch.py
 !/radar/owned_collector.py

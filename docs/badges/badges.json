@@ -1,0 +1,7 @@
+{
+  "style": "flat-square-v1",
+  "badges": [
+    {"file": "python.svg", "label": "Python", "value": "3.10+", "category": "runtime", "evidence": "../../README.md"},
+    {"file": "powershell.svg", "label": "Windows PowerShell", "value": "5.1", "category": "platform", "evidence": "../../scripts/run-radar.ps1"}
+  ]
+}
