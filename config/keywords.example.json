@@ -1,0 +1,15 @@
+{
+  "weekly_query_budget": 2,
+  "monthly_classic_budget": 0,
+  "query_mix": {"fixed": 0.5, "exploration": 0.5},
+  "weekly_layer_mix": {"topic": 0.5, "recent": 0.5},
+  "layers": {
+    "topic": {"variants": [{"time_filter": "不限", "sort_mode": "最多收藏", "role": "discovery"}]},
+    "recent": {"variants": [{"time_filter": "一周内", "sort_mode": "最新", "role": "discovery"}]}
+  },
+  "queries": [
+    {"key": "demo-topic", "text": "示例主题甲", "group": "fixed", "layers": ["topic"], "source": "synthetic"},
+    {"key": "demo-recent", "text": "示例主题乙", "group": "exploration", "layers": ["recent"], "source": "synthetic"}
+  ],
+  "topic_rules": []
+}
