@@ -4,6 +4,9 @@
 !/docs/
 !/docs/assets/
 !/docs/badges/
+!/examples/
+!/examples/sample-output/
+!/examples/weekly/
 !/radar/
 !/schemas/
 !/scripts/
@@ -17,6 +20,16 @@
 !/config/keywords.example.json
 !/docs/device-guide.md
 !/docs/assets/radar-overview.svg
+!/docs/assets/pipeline.svg
+!/docs/assets/pipeline-mobile.svg
+!/examples/replay.py
+!/examples/export_batch.py
+!/examples/sample-output/samples.csv
+!/examples/sample-output/observations.jsonl
+!/examples/sample-output/sources.html
+!/examples/weekly/README.md
+!/examples/weekly/observations.csv
+!/examples/weekly/weekly-notes.csv
 !/docs/badges/badges.json
 !/docs/badges/python.svg
 !/docs/badges/powershell.svg
